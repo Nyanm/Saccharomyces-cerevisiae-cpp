@@ -7,7 +7,12 @@
 
 #include "vector"
 #include "string"
+#include "fstream"
+#include "iostream"
+#include "sstream"
 #include "json/json.h"
+#include "map"
+#include "../util/logger.h"
 
 using namespace std;
 
@@ -25,16 +30,27 @@ struct musicRecord {
     float volForce = 0.0;
 };
 
-
 class aspParser {
 
 public:
     aspParser(const string &db_dir, int map_size, const string &card_num); // __init__
     vector<musicRecord> musicMap;
-    int last_index = 0;
+    int lastIndex = 0;
 
     // user profile
+    string userName;
+    int apCard = 6001;  // gen6 default appeal card
+    string akaName = "よろしくお願いします"; // default akaname id=1
+    int skill = 0;  // no rank
+    string crewID = "0014";  // Gen 6 Rasis
 
+private:
+    int crew_index = 0;
+    int aka_index = 0;
+
+    const map<int, string> crew_id_map = {
+            {116, "0001"}
+    };
 
 };
 
