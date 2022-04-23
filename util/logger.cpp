@@ -10,7 +10,7 @@ std::shared_ptr<spdlog::logger> getFileLogger() {
     std::shared_ptr<spdlog::logger> logger = spdlog::basic_logger_mt("file_logger", "timber.log");
     logger->set_level(spdlog::level::debug);
     logger->set_pattern("[%H:%M:%S.%e] %L: %v");
-    logger->info("FileLogger initialization complete.");
+    logger->info("FileLogger initialization complete");
     return logger;
 }
 
@@ -18,7 +18,7 @@ std::shared_ptr<spdlog::logger> getConsoleLogger(){
     std::shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("console_logger");
     logger->set_level(spdlog::level::info);
     logger->set_pattern("[%l] %v");
-    logger->info("ConsoleLogger initialization complete.");
+    logger->info("ConsoleLogger initialization complete");
     return logger;
 }
 
