@@ -25,11 +25,11 @@ if (jsoncpp_FOUND)
     target_link_libraries(sdvx_cpp PRIVATE jsoncpp_lib jsoncpp_object JsonCpp::JsonCpp)
 endif ()
 
-# tinyxml2
-find_package(tinyxml2 CONFIG REQUIRED)
-if (tinyxml2_FOUND)
-    message("find tinyxml2 ${tinyxml2_VERSION}")
-    target_link_libraries(sdvx_cpp PRIVATE tinyxml2::tinyxml2)
+# tinyxml
+find_package(tinyxml CONFIG REQUIRED)
+if (tinyxml_FOUND)
+    message("find tinyxml ${tinyxml_VERSION}")
+    target_link_libraries(sdvx_cpp PRIVATE unofficial-tinyxml::unofficial-tinyxml)
 endif ()
 
 # spdlog
@@ -44,4 +44,4 @@ find_package(SQLiteCpp CONFIG REQUIRED)
 if (SQLiteCpp_FOUND)
     message("find SQLiteCpp ${SQLiteCpp_VERSION}")
     target_link_libraries(sdvx_cpp PRIVATE SQLiteCpp)
-endif()
+endif ()
