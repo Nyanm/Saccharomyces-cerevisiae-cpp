@@ -124,13 +124,56 @@ aspParser::aspParser(const string &db_dir, int map_size, const string &card_num)
     fileLogger->flush();
 }
 
-void aspParser::update_akaname(const vector<akaData> &akaMap) {
+void aspParser::updateAkaName(const vector<akaData> &akaMap) {
     for (int index = 0; index < akaMap.size(); index += 1) {
         if (aka_index == akaMap[index].aID) {
             akaName = akaMap[index].name;
-            fileLogger->debug("Update akaname to {}", akaName);
+            fileLogger->info("Update akaname to {}", akaName);
             return;
         }
     }
-    fileLogger->info("Update akaname failed (no corresponding akaname index, maybe you are using a modified one)");
+    fileLogger->warn("Update akaname failed (no corresponding akaname index, maybe you are using a modified one)");
+}
+
+void aspParser::updateVolForce(const vector<musicData> &musicMap) {
+    musicRecord *cur_data;
+    b50Ptr cur_b50_ptr;
+    priority_queue<b50Ptr> best_queue;
+
+    for (int index = 0; index < musicRecordMap.size(); index += 1) {
+        cur_data = &musicRecordMap[index];
+        if (!cur_data->isRecorded) continue; // not played yet
+        switch (cur_data->musicType) {
+            case 0:  // novice
+                cur_data->level = musicMap[cur_data->mid].novice.level;
+                break;
+            case 1:  // advanced
+                cur_data->level = musicMap[cur_data->mid].advanced.level;
+                break;
+            case 2:  // exhaust
+                cur_data->level = musicMap[cur_data->mid].exhaust.level;
+                break;
+            case 3:  // infinite
+                cur_data->level = musicMap[cur_data->mid].infinite.level;
+                break;
+            case 4:  // maximum
+                cur_data->level = musicMap[cur_data->mid].maximum.level;
+                break;
+        }
+        cur_data->volForce = (float) cur_data->level * ((float) cur_data->score / 10000000) *
+                             clear_factor[cur_data->clear] * grade_factor[cur_data->grade];
+
+        cur_b50_ptr = {cur_data->volForce, cur_data->mid};
+
+        if (best_queue.size() <= BEST_SIZE) {
+            best_queue.push(cur_b50_ptr);
+        } else {
+            best_queue.pop();
+            best_queue.push(cur_b50_ptr);
+        }
+    }
+    for (int index = 0; index <= BEST_SIZE; index += 1) {
+        bestMap.insert(bestMap.begin(), best_queue.top());
+        best_queue.pop();
+    }
 }

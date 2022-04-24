@@ -16,7 +16,9 @@ add_executable(sdvx_cpp
         sdvx/sdvxParser.h
 
         util/logger.cpp
-        util/logger.h util/pj_cfg.h util/pj_struct.h)
+        util/logger.h
+        util/pj_cfg.h
+        util/pj_struct.h)
 
 # jsoncpp
 find_package(jsoncpp CONFIG REQUIRED)

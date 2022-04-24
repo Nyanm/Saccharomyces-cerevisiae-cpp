@@ -7,5 +7,6 @@
 
 #define META_VERSION 1
 #define FIX_VERSION 0
+#define BEST_SIZE 100
 
 #endif //SDVX_CPP_PJ_CFG_H
