@@ -60,11 +60,11 @@ struct searchData {
     std::string meme;
 };
 
-struct b50Ptr {
+struct bestPtr {
     float vf = 0.0;
     int mid = 0;
 
-    bool operator < (const b50Ptr &temp) const { return vf > temp.vf; }
+    bool operator < (const bestPtr &temp) const { return vf > temp.vf; }
 };
 
 #endif //SDVX_CPP_PJ_STRUCT_H

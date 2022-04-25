@@ -137,11 +137,16 @@ void aspParser::updateAkaName(const vector<akaData> &akaMap) {
 
 void aspParser::updateVolForce(const vector<musicData> &musicMap) {
     musicRecord *cur_data;
-    b50Ptr cur_b50_ptr;
-    priority_queue<b50Ptr> best_queue;
+    bestPtr *cur_best_ptr;
+
+    priority_queue<bestPtr> best_queue;
+    bestMap = vector<bestPtr>(BEST_SIZE);
+    float vol_force;
 
     for (int index = 0; index < musicRecordMap.size(); index += 1) {
         cur_data = &musicRecordMap[index];
+        cur_best_ptr = new bestPtr;
+
         if (!cur_data->isRecorded) continue; // not played yet
         switch (cur_data->musicType) {
             case 0:  // novice
@@ -163,17 +168,26 @@ void aspParser::updateVolForce(const vector<musicData> &musicMap) {
         cur_data->volForce = (float) cur_data->level * ((float) cur_data->score / 10000000) *
                              clear_factor[cur_data->clear] * grade_factor[cur_data->grade];
 
-        cur_b50_ptr = {cur_data->volForce, cur_data->mid};
+        cur_best_ptr->mid = cur_data->mid;
+        cur_best_ptr->vf = cur_data->volForce;
 
-        if (best_queue.size() <= BEST_SIZE) {
-            best_queue.push(cur_b50_ptr);
+        if (best_queue.size() < BEST_SIZE) {
+            best_queue.push(*cur_best_ptr);
         } else {
             best_queue.pop();
-            best_queue.push(cur_b50_ptr);
+            best_queue.push(*cur_best_ptr);
         }
     }
-    for (int index = 0; index <= BEST_SIZE; index += 1) {
-        bestMap.insert(bestMap.begin(), best_queue.top());
+    for (int index = BEST_SIZE - 1; index >= 0; index -= 1) {
+        bestMap[index].mid = best_queue.top().mid;
+        bestMap[index].vf = best_queue.top().vf;
+        if (index < 50) {
+            vol_force = best_queue.top().vf;
+            vol_force -= fmod(vol_force, 0.1);
+            b50 += vol_force;
+        }
         best_queue.pop();
     }
+    b50 /= 50;
+    fileLogger->debug("Calculate B50 volforce {}", b50);
 }

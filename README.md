@@ -11,7 +11,7 @@
 - [x] sdvx@asphyxia.db解析
 - [x] 游戏数据解析
 - [x] 数据库改造(脑子抽了才会拿.npy存数据)
-- [ ] 数据分析与堆改造
+- [x] 数据分析与堆改造
 - [ ] 文字B50
 
 ### Stage 2: Introducing OpenCV

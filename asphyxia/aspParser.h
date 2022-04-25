@@ -38,8 +38,8 @@ public:
     string crewID = "0014";  // Gen 6 Rasis
 
     // B50 data
-    int b50 = 0;
-    vector<b50Ptr> bestMap;
+    float b50 = 0;
+    vector<bestPtr> bestMap;
 
 private:
     int crew_index = 0;
