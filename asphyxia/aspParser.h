@@ -38,15 +38,15 @@ public:
     string crewID = "0014";  // Gen 6 Rasis
 
     // B50 data
-    float b50 = 0;
+    int64_t b50 = 0;
     vector<bestPtr> bestMap;
 
 private:
     int crew_index = 0;
     int aka_index = 0;
 
-    const float clear_factor[6] = {0, 0.5, 1.0, 1.02, 1.05, 1.10};
-    const float grade_factor[11] = {0, 0.80, 0.82, 0.85, 0.88, 0.91, 0.94, 0.97, 1.00, 1.02, 1.05};
+    const int64_t clear_factor[6] = {0, 50, 100, 102, 105, 110};
+    const int64_t grade_factor[11] = {0, 80, 82, 85, 88, 91, 94, 97, 100, 102, 105};
 
     const map<int, string> crew_id_map = {
             {116, "0001"}

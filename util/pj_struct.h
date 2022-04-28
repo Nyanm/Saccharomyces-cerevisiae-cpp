@@ -19,7 +19,7 @@ struct musicRecord {
     int exScore = 0;
 
     int level = 0;
-    float volForce = 0.0;
+    int64_t volForce = 0;
 };
 
 
@@ -61,7 +61,7 @@ struct searchData {
 };
 
 struct bestPtr {
-    float vf = 0.0;
+    int64_t vf = 0;
     int mid = 0;
 
     bool operator < (const bestPtr &temp) const { return vf > temp.vf; }

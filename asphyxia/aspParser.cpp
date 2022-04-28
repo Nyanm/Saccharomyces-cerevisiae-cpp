@@ -141,7 +141,6 @@ void aspParser::updateVolForce(const vector<musicData> &musicMap) {
 
     priority_queue<bestPtr> best_queue;
     bestMap = vector<bestPtr>(BEST_SIZE);
-    float vol_force;
 
     for (int index = 0; index < musicRecordMap.size(); index += 1) {
         cur_data = &musicRecordMap[index];
@@ -165,8 +164,9 @@ void aspParser::updateVolForce(const vector<musicData> &musicMap) {
                 cur_data->level = musicMap[cur_data->mid].maximum.level;
                 break;
         }
-        cur_data->volForce = (float) cur_data->level * ((float) cur_data->score / 10000000) *
-                             clear_factor[cur_data->clear] * grade_factor[cur_data->grade];
+
+        cur_data->volForce = (int64_t)cur_data->level * (int64_t)cur_data->score *
+                clear_factor[cur_data->clear] * grade_factor[cur_data->grade];
 
         cur_best_ptr->mid = cur_data->mid;
         cur_best_ptr->vf = cur_data->volForce;
@@ -181,13 +181,9 @@ void aspParser::updateVolForce(const vector<musicData> &musicMap) {
     for (int index = BEST_SIZE - 1; index >= 0; index -= 1) {
         bestMap[index].mid = best_queue.top().mid;
         bestMap[index].vf = best_queue.top().vf;
-        if (index < 50) {
-            vol_force = best_queue.top().vf;
-            vol_force -= fmod(vol_force, 0.1);
-            b50 += vol_force;
-        }
+        if (index < 50) b50 += ((best_queue.top().vf / 10000000000) * 100);
         best_queue.pop();
     }
     b50 /= 50;
-    fileLogger->debug("Calculate B50 volforce {}", b50);
+    fileLogger->info("Calculate B50 volforce {}", b50);
 }
